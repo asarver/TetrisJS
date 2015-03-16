@@ -1,34 +1,31 @@
-Line.prototype = new Shape();
+O.prototype = new Shape();
 
-function Line() {
-    this.setType("line");
-    this.setColor("#00CCFF");
+function O() {
+    this.setType("O");
+    this.setColor("#FFFF00");
     this.setPosX(X_START);
     this.setPosY(Y_START);
-    this.setWidth(1);
-    this.setLength(4);
+    this.setWidth(2);
+    this.setLength(2);
 }
 
-Line.prototype.drawShape = function() {
+O.prototype.drawShape = function () {
     var color = this.getColor();
     var posX = this.getPosX();
     var posY = this.getPosY();
-    var w = this.getWidth();
-    var l = this.getLength();
-    for (var i = 0; i < w; i++) {
-        block(posX + (i * BLOCK_WIDTH), posY, color);   
-    }
-    for (var i = 0; i < l; i++) {
-        block(posX, posY + (i * BLOCK_WIDTH), color);   
-    }
-}
+    block(posX, posY, color);
+    block(posX + BLOCK_WIDTH, posY, color);
+    block(posX, posY + BLOCK_WIDTH, color);
+    block(posX + BLOCK_WIDTH, posY + BLOCK_WIDTH, color);
+};
 
-Line.prototype.setCells = function() {
+
+O.prototype.setCells = function () {
     var begX = (this.getPosX() - TETRIS_BEGIN) / BLOCK_WIDTH;
     var begY = (HEIGHT - this.getPosY()) / BLOCK_WIDTH;
     var w = this.getWidth();
     var l = this.getLength();
-    for (var x = begX; x < begX + w; x++) {
+    for (var x = begX; x < begX + l; x++) {
         for (var y = begY - l; y < begY; y++) {
             console.log("SETTING x: " + x + ", y: " + y + ", l: " + l);
             if (cells[y][x].exists === 1) {

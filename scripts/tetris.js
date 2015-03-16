@@ -141,7 +141,7 @@ function drawCells() {
 }
 
 function createObject() {
-    var possible_objects = [new Square(), new Line()];
+    var possible_objects = [new O(), new I()];
     //console.log(possible_objects);
     
     return possible_objects[Math.floor(Math.random() * possible_objects.length)];
