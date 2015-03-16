@@ -34,7 +34,7 @@ function onKeyUp(evt) {
 
 function changeObjectPosition() {
     var currentY = current_obj.getPosY();
-    var l = current_obj.getLength();
+    var l = current_obj.getBlocks()[0].length;
     if (currentY + BLOCK_WIDTH*l >= HEIGHT || current_obj.willIntersectObjectFromBelow()) {
         current_obj.setCells();
         current_obj = null;
@@ -105,7 +105,7 @@ function draw() {
     
     if (rightDown) {
         var posX = current_obj.getPosX();
-        var w = current_obj.getWidth();
+        var w = current_obj.getBlocks().length;
         var projX = posX;
         if (posX + BLOCK_WIDTH*w < TETRIS_END && 
             !current_obj.willIntersectObjectFromRight()) {
