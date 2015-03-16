@@ -1,0 +1,12 @@
+var ctx;
+var intervalId, currentObjectId;
+var WIDTH, HEIGHT;
+var NROWS, NCOLS;
+var TETRIS_BEGIN, TETRIS_END;
+var cells;
+var BLOCK_WIDTH;
+var current_obj;
+var X_START;
+var Y_START;
+var rightDown, leftDown, downDown;
+var SKIP_ROW;
