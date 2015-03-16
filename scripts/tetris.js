@@ -96,6 +96,7 @@ function draw() {
     
     if (current_obj === null) {
         current_obj = createObject();
+        clearInterval(currentObjectId);
         currentObjectId = setInterval(changeObjectPosition, 1000);
         current_obj.drawShape();
     } else {
