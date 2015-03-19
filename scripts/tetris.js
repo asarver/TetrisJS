@@ -46,7 +46,6 @@ function changeObjectPosition() {
 
 function checkRowComplete(y,x) {
     var allExists = true;
-    //console.log("y = " + y);
     for (var i = 0; i < NCOLS; i++) {
         allExists &= cells[y][i].exists === 1;
     }
@@ -129,12 +128,11 @@ function draw() {
 }
 
 function drawCells() {
-    for (var x = 0; x < NCOLS; x++) {
+    for (var x = NCOLS-1; x >= 0; x--) {
         for (var y = 0; y < NROWS; y++) {
             if (cells[y][x].exists === 1 && SKIP_ROW !== y) {
-                var xStart = TETRIS_BEGIN + x*BLOCK_WIDTH;
+                var xStart = TETRIS_END - (x+1)*BLOCK_WIDTH;
                 var yStart = HEIGHT - (1+y)*BLOCK_WIDTH;
-                //console.log("xStart: " + xStart + ", yStart: " + yStart);
                 block(xStart, yStart, cells[y][x].color);
             }
         }
@@ -142,8 +140,7 @@ function drawCells() {
 }
 
 function createObject() {
-    var possible_objects = [new O(), new I()];
-    //console.log(possible_objects);
+    var possible_objects = [new O(), new I(), new J()];
     
     return possible_objects[Math.floor(Math.random() * possible_objects.length)];
 }

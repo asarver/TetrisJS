@@ -4,8 +4,6 @@ function Shape() {
     var pos_x = 0;
     var pos_y = 0;
     var blocks = [];
-    var width = 0; // changes when rotated
-    var length = 0; // changes when rotated
 }
 
 Shape.prototype.getColor = function () {
@@ -61,20 +59,22 @@ Shape.prototype.drawShape = function () {
 }
 
 Shape.prototype.setCells = function () {
-    var begX = (this.getPosX() - TETRIS_BEGIN) / BLOCK_WIDTH;
-    var begY = (HEIGHT - this.getPosY()) / BLOCK_WIDTH;
     var w = this.blocks.length;
     var l = this.blocks[0].length;
+    var begX = (TETRIS_END - this.getPosX()) / BLOCK_WIDTH;
+    begX -= w;
+    var begY = (HEIGHT - this.getPosY()) / BLOCK_WIDTH;
     for (var x = begX; x < begX + w; x++) {
         for (var y = begY - l; y < begY; y++) {
             console.log("SETTING x: " + x + ", y: " + y + ", l: " + l);
-            if (cells[y][x].exists === 1 && this.blocks[x-begX][y-begY + l] === 1) {
+            if (cells[y][x].exists === 1 && this.blocks[begX + w - x - 1][begY - y - 1] === 1) {
                 clearInterval(intervalId);
                 clearInterval(currentObjectId);
                 console.log("you lose!");
+            }else if (this.blocks[begX + w - x - 1][begY - y - 1] === 1) {
+                cells[y][x].exists = this.blocks[begX + w - x - 1][begY - y - 1];
+                cells[y][x].color = this.getColor();
             }
-            cells[y][x].exists = this.blocks[x - begX][y - begY + l];
-            cells[y][x].color = this.getColor();
         }
     }
 
@@ -98,46 +98,64 @@ Shape.prototype.rotate = function () {
 }
 
 Shape.prototype.willIntersectObjectFromBelow = function () {
-    var begX = (this.pos_x - TETRIS_BEGIN) / BLOCK_WIDTH;
-    var begY = (HEIGHT - this.pos_y) / BLOCK_WIDTH;
     var w = this.blocks.length;
     var l = this.blocks[0].length;
+    var begX = (TETRIS_END - this.pos_x) / BLOCK_WIDTH;
+    begX -= w;
+    var begY = (HEIGHT - this.pos_y) / BLOCK_WIDTH;
+
+    if (this.pos_Y + BLOCK_WIDTH > HEIGHT) {
+        return true;
+    }
+
     for (var x = begX; x < begX + w; x++) {
-        if (cells[begY - l - 1][x].exists === 1 && this.blocks[x - begX][this.blocks[0].length - 1] === 1) {
-            return true;
+        for (var y = begY - l; y < begY; y++) {
+            if (cells[y-1][x].exists === 1 && this.blocks[begX + w - x - 1][begY - y - 1] === 1) {
+                return true;
+            }
         }
     }
     return false;
 }
 
 Shape.prototype.willIntersectObjectFromLeft = function () {
-    var begX = (this.pos_x - TETRIS_BEGIN) / BLOCK_WIDTH;
-    var begY = (HEIGHT - this.pos_y) / BLOCK_WIDTH;
     var w = this.blocks.length;
     var l = this.blocks[0].length;
+    var begX = (TETRIS_END - this.pos_x) / BLOCK_WIDTH;
+    begX -= w;
+    var begY = (HEIGHT - this.pos_y) / BLOCK_WIDTH;
+
     if (this.pos_x - BLOCK_WIDTH < TETRIS_BEGIN) {
         return true;
     }
-    for (var y = begY; y > begY - l; y--) {
-        if (cells[y][begX - 1].exists === 1 && this.blocks[y - begY][0] === 1) {
-            return true;
+
+    for (var x = begX; x < begX + w; x++) {
+        for (var y = begY - l; y < begY; y++) {
+            if (cells[y][x+1].exists === 1 && this.blocks[begX + w - x - 1][begY - y - 1] === 1) {
+                return true;
+            }
         }
     }
     return false;
 }
 
 Shape.prototype.willIntersectObjectFromRight = function () {
-    var begX = (this.pos_x - TETRIS_BEGIN) / BLOCK_WIDTH;
-    var begY = (HEIGHT - this.pos_y) / BLOCK_WIDTH;
     var w = this.blocks.length;
     var l = this.blocks[0].length;
+    var begX = (TETRIS_END - this.pos_x) / BLOCK_WIDTH;
+    begX -= w;
+    var begY = (HEIGHT - this.pos_y) / BLOCK_WIDTH;
     console.log("begX " + begX + ", w " + w);
-    if (begX + w >= NCOLS) {
+
+    if (begX >= NCOLS) {
         return true;
     }
-    for (var y = begY; y > begY - l; y--) {
-        if (cells[y][begX + w].exists === 1 && this.blocks[y - begY][this.blocks[0].length - 1] === 1) {
-            return true;
+
+    for (var x = begX; x < begX + w; x++) {
+        for (var y = begY - l; y < begY; y++) {
+            if (cells[y][x-1].exists === 1 && this.blocks[begX + w - x - 1][begY - y - 1] === 1) {
+                return true;
+            }
         }
     }
     return false;
