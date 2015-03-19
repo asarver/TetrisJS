@@ -10,6 +10,7 @@ function init() {
     leftDown = false;
     rightDown = false;
     downDown = false;
+    upDown = false;
     SKIP_ROW = -1;
     TETRIS_BEGIN = (WIDTH - BLOCK_WIDTH * NCOLS) / 2;
     TETRIS_END = TETRIS_BEGIN + (BLOCK_WIDTH * NCOLS);
@@ -30,6 +31,7 @@ function onKeyUp(evt) {
     if (evt.keyCode === 39) rightDown = true;
     else if (evt.keyCode === 37) leftDown = true;
     else if (evt.keyCode === 40) downDown = true;
+    else if (evt.keyCode === 38) upDown = true;
 }
 
 function changeObjectPosition() {
@@ -122,8 +124,11 @@ function draw() {
         current_obj.setPosX(projX);
         leftDown = false;
     } else if (downDown) {
-        current_obj.rotate();
+        current_obj.rotateLeft();
         downDown = false;
+    } else if (upDown) {
+        current_obj.rotateRight();
+        upDown = false;
     }
 }
 

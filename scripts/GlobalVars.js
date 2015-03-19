@@ -8,5 +8,5 @@ var BLOCK_WIDTH;
 var current_obj;
 var X_START;
 var Y_START;
-var rightDown, leftDown, downDown;
+var rightDown, leftDown, downDown, upDown;
 var SKIP_ROW;

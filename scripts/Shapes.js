@@ -86,14 +86,71 @@ Shape.prototype.setCells = function () {
     }
 }
 
-Shape.prototype.rotate = function () {
+Shape.prototype.transpose = function() {
     var newBlocks = [];
+
     for (var c = 0; c < this.blocks[0].length; c++) {
-        newBlocks[c] = []
+        newBlocks[c] = [];
         for (var r = 0; r < this.blocks.length; r++) {
             newBlocks[c][r] = this.blocks[r][c];
+        } 
+    }
+
+    return newBlocks;
+}
+
+Shape.prototype.switchRows = function (matrix) {
+    var newBlocks = [];
+    for (var c = 0; c < matrix.length; c++) {
+        newBlocks[c] = [];
+        var rowLength = matrix[0].length;
+        for (var r = 0; r < parseInt(rowLength/2); r++) {
+            var first = matrix[c][r];
+            var last = matrix[c][rowLength - r - 1];
+            newBlocks[c][r] = last;
+            newBlocks[c][rowLength - r - 1] = first;
+        }
+        if (rowLength % 2 !== 0) {
+            newBlocks[c][parseInt(rowLength / 2)] = matrix[c][parseInt(rowLength / 2)];
         }
     }
+    return newBlocks;
+}
+
+Shape.prototype.switchColumns = function(matrix)
+{
+    var newBlocks = [];
+    var matrixLength = matrix.length;
+    for (var c = 0; c < parseInt(matrixLength/2); c++) {
+        newBlocks[c] = [];
+        var first = matrix[c];
+        var last = matrix[matrixLength - c - 1];
+        newBlocks[c] = last;
+        newBlocks[matrixLength - c - 1] = first;
+    }
+    if (matrixLength % 2 !== 0) {
+        newBlocks[parseInt(matrixLength / 2)] = matrix[parseInt(matrixLength / 2)];
+    }
+    return newBlocks;
+}
+
+Shape.prototype.rotateRight = function () {
+    var newBlocks = [];
+
+    // first tranpose the matrix
+    newBlocks = this.transpose();
+    // then switch rows to rotate 90 degrees
+    newBlocks = this.switchRows(newBlocks);
+    this.blocks = newBlocks;
+}
+
+Shape.prototype.rotateLeft = function() {
+    var newBlocks = [];
+
+    // first transpose the matrix
+    newBlocks = this.transpose();
+    // then switch the columns to rotate -90 degree
+    newBlocks = this.switchColumns(newBlocks);
     this.blocks = newBlocks;
 }
 
