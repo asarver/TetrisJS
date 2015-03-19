@@ -9,4 +9,7 @@ var current_obj;
 var X_START;
 var Y_START;
 var rightDown, leftDown, downDown, upDown;
-var SKIP_ROW;
+var DROP_INTERVAL;
+var REFRESH_RATE;
+var SCORE;
+var LEVEL;

@@ -11,7 +11,10 @@ function init() {
     rightDown = false;
     downDown = false;
     upDown = false;
-    SKIP_ROW = -1;
+    SCORE = 0;
+    DROP_INTERVAL = 1000;
+    REFRESH_RATE = 10;
+    LEVEL = 1;
     TETRIS_BEGIN = (WIDTH - BLOCK_WIDTH * NCOLS) / 2;
     TETRIS_END = TETRIS_BEGIN + (BLOCK_WIDTH * NCOLS);
     current_obj = null;
@@ -23,8 +26,8 @@ function init() {
         }
     }
     
-    intervalId = setInterval(draw, 10);
-    currentObjectId = setInterval(changeObjectPosition, 1000);
+    intervalId = setInterval(draw, REFRESH_RATE);
+    currentObjectId = setInterval(changeObjectPosition, DROP_INTERVAL);
 }
 
 function onKeyUp(evt) {
@@ -52,6 +55,13 @@ function checkRowComplete(y,x) {
         allExists &= cells[y][i].exists === 1;
     }
     if (allExists) {
+        SCORE += 100;
+        if (SCORE % 1000 === 0) {
+            LEVEL += 1;
+            DROP_INTERVAL -= 50;
+            $('[id*=lblLevel]').html("Level: " + LEVEL);
+            $('[id*=lblScore]').html("Score: " + SCORE);
+        }
         console.log("all Exists for row " + y);
         for (var r = y; r < NROWS-1; r++) {
             for (var c = 0; c < NCOLS; c++) {
@@ -98,7 +108,7 @@ function draw() {
     if (current_obj === null) {
         current_obj = createObject();
         clearInterval(currentObjectId);
-        currentObjectId = setInterval(changeObjectPosition, 1000);
+        currentObjectId = setInterval(changeObjectPosition, DROP_INTERVAL);
         current_obj.drawShape();
     } else {
         current_obj.drawShape();
@@ -135,7 +145,7 @@ function draw() {
 function drawCells() {
     for (var x = NCOLS-1; x >= 0; x--) {
         for (var y = 0; y < NROWS; y++) {
-            if (cells[y][x].exists === 1 && SKIP_ROW !== y) {
+            if (cells[y][x].exists === 1) {
                 var xStart = TETRIS_END - (x+1)*BLOCK_WIDTH;
                 var yStart = HEIGHT - (1+y)*BLOCK_WIDTH;
                 block(xStart, yStart, cells[y][x].color);
