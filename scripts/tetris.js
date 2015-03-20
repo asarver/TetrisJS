@@ -56,11 +56,11 @@ function checkRowComplete(y,x) {
     }
     if (allExists) {
         SCORE += 100;
+	$('[id*=lblScore]').html("Score: " + SCORE);
         if (SCORE % 1000 === 0) {
             LEVEL += 1;
             DROP_INTERVAL -= 50;
             $('[id*=lblLevel]').html("Level: " + LEVEL);
-            $('[id*=lblScore]').html("Score: " + SCORE);
         }
         console.log("all Exists for row " + y);
         for (var r = y; r < NROWS-1; r++) {
