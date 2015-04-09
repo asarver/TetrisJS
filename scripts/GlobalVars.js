@@ -8,7 +8,7 @@ var BLOCK_WIDTH;
 var current_obj;
 var X_START;
 var Y_START;
-var rightDown, leftDown, downDown, upDown;
+var rightDown, leftDown, downDown, upDown, spaceDown;
 var DROP_INTERVAL;
 var REFRESH_RATE;
 var SCORE;

@@ -11,6 +11,7 @@ function init() {
     rightDown = false;
     downDown = false;
     upDown = false;
+    spaceDown = false;
     SCORE = 0;
     DROP_INTERVAL = 1000;
     REFRESH_RATE = 10;
@@ -35,6 +36,21 @@ function onKeyUp(evt) {
     else if (evt.keyCode === 37) leftDown = true;
     else if (evt.keyCode === 40) downDown = true;
     else if (evt.keyCode === 38) upDown = true;
+    else if (evt.keyCode === 32)
+    {
+        spaceDown = true;
+        clearInterval(currentObjectId);
+        currentObjectId = setInterval(changeObjectPosition, DROP_INTERVAL);
+    }
+}
+
+function onKeyDown(evt) {
+    if (evt.keyCode === 32 && spaceDown)
+    {
+        spaceDown = false;
+        clearInterval(currentObjectId);
+        currentObjectId = setInterval(changeObjectPosition, 100);
+    }
 }
 
 function changeObjectPosition() {
@@ -226,5 +242,6 @@ function drawS(x,y) {
 
 $(document).ready(function() {
     $(document).keyup(onKeyUp);
+    $(document).keydown(onKeyDown);
     init();
 });
